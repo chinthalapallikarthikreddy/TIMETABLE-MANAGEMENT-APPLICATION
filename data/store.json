@@ -1,0 +1,590 @@
+{
+  "courses": {
+    "C001": {
+      "course_id": "C001",
+      "name": "Course_1",
+      "code": "CO7001",
+      "level": 7
+    },
+    "C002": {
+      "course_id": "C002",
+      "name": "Course_2",
+      "code": "CO7002",
+      "level": 7
+    },
+    "C003": {
+      "course_id": "C003",
+      "name": "Course_3",
+      "code": "CO7003",
+      "level": 7
+    },
+    "C004": {
+      "course_id": "C004",
+      "name": "Course_4",
+      "code": "CO7004",
+      "level": 7
+    },
+    "C005": {
+      "course_id": "C005",
+      "name": "Course_5",
+      "code": "CO7005",
+      "level": 7
+    },
+    "C006": {
+      "course_id": "C006",
+      "name": "Course_6",
+      "code": "CO7006",
+      "level": 7
+    },
+    "C007": {
+      "course_id": "C007",
+      "name": "Course_7",
+      "code": "CO7007",
+      "level": 7
+    },
+    "C008": {
+      "course_id": "C008",
+      "name": "Course_8",
+      "code": "CO7008",
+      "level": 7
+    },
+    "C009": {
+      "course_id": "C009",
+      "name": "Course_9",
+      "code": "CO7009",
+      "level": 7
+    },
+    "C010": {
+      "course_id": "C010",
+      "name": "Course_10",
+      "code": "CO7010",
+      "level": 7
+    },
+    "C011": {
+      "course_id": "C011",
+      "name": "Course_11",
+      "code": "CO7011",
+      "level": 7
+    },
+    "C012": {
+      "course_id": "C012",
+      "name": "Course_12",
+      "code": "CO7012",
+      "level": 7
+    },
+    "C013": {
+      "course_id": "C013",
+      "name": "Course_13",
+      "code": "CO7013",
+      "level": 7
+    },
+    "C014": {
+      "course_id": "C014",
+      "name": "Course_14",
+      "code": "CO7014",
+      "level": 7
+    },
+    "C015": {
+      "course_id": "C015",
+      "name": "Course_15",
+      "code": "CO7015",
+      "level": 7
+    }
+  },
+  "lecturers": {
+    "L001": {
+      "lecturer_id": "L001",
+      "name": "Dr Lecturer 1",
+      "email": "lecturer1@uni.ac.uk"
+    },
+    "L002": {
+      "lecturer_id": "L002",
+      "name": "Dr Lecturer 2",
+      "email": "lecturer2@uni.ac.uk"
+    },
+    "L003": {
+      "lecturer_id": "L003",
+      "name": "Dr Lecturer 3",
+      "email": "lecturer3@uni.ac.uk"
+    },
+    "L004": {
+      "lecturer_id": "L004",
+      "name": "Dr Lecturer 4",
+      "email": "lecturer4@uni.ac.uk"
+    },
+    "L005": {
+      "lecturer_id": "L005",
+      "name": "Dr Lecturer 5",
+      "email": "lecturer5@uni.ac.uk"
+    },
+    "L006": {
+      "lecturer_id": "L006",
+      "name": "Dr Lecturer 6",
+      "email": "lecturer6@uni.ac.uk"
+    },
+    "L007": {
+      "lecturer_id": "L007",
+      "name": "Dr Lecturer 7",
+      "email": "lecturer7@uni.ac.uk"
+    },
+    "L008": {
+      "lecturer_id": "L008",
+      "name": "Dr Lecturer 8",
+      "email": "lecturer8@uni.ac.uk"
+    },
+    "L009": {
+      "lecturer_id": "L009",
+      "name": "Dr Lecturer 9",
+      "email": "lecturer9@uni.ac.uk"
+    },
+    "L010": {
+      "lecturer_id": "L010",
+      "name": "Dr Lecturer 10",
+      "email": "lecturer10@uni.ac.uk"
+    },
+    "L011": {
+      "lecturer_id": "L011",
+      "name": "Dr Lecturer 11",
+      "email": "lecturer11@uni.ac.uk"
+    },
+    "L012": {
+      "lecturer_id": "L012",
+      "name": "Dr Lecturer 12",
+      "email": "lecturer12@uni.ac.uk"
+    }
+  },
+  "rooms": {
+    "R101": {
+      "room_id": "R101"
+    },
+    "R102": {
+      "room_id": "R102"
+    },
+    "R103": {
+      "room_id": "R103"
+    },
+    "R104": {
+      "room_id": "R104"
+    },
+    "R105": {
+      "room_id": "R105"
+    },
+    "R106": {
+      "room_id": "R106"
+    },
+    "R107": {
+      "room_id": "R107"
+    },
+    "R108": {
+      "room_id": "R108"
+    },
+    "R109": {
+      "room_id": "R109"
+    },
+    "R110": {
+      "room_id": "R110"
+    }
+  },
+  "entries": [
+    {
+      "course_id": "C013",
+      "lecturer_id": "L002",
+      "room": "R107",
+      "timeslot": {
+        "day": "Thursday",
+        "start_time": "14:00",
+        "end_time": "15:00"
+      }
+    },
+    {
+      "course_id": "C014",
+      "lecturer_id": "L012",
+      "room": "R101",
+      "timeslot": {
+        "day": "Friday",
+        "start_time": "15:00",
+        "end_time": "16:00"
+      }
+    },
+    {
+      "course_id": "C015",
+      "lecturer_id": "L005",
+      "room": "R104",
+      "timeslot": {
+        "day": "Monday",
+        "start_time": "15:00",
+        "end_time": "16:00"
+      }
+    },
+    {
+      "course_id": "C005",
+      "lecturer_id": "L005",
+      "room": "R102",
+      "timeslot": {
+        "day": "Monday",
+        "start_time": "10:00",
+        "end_time": "11:00"
+      }
+    },
+    {
+      "course_id": "C014",
+      "lecturer_id": "L008",
+      "room": "R109",
+      "timeslot": {
+        "day": "Friday",
+        "start_time": "14:00",
+        "end_time": "15:00"
+      }
+    },
+    {
+      "course_id": "C014",
+      "lecturer_id": "L011",
+      "room": "R107",
+      "timeslot": {
+        "day": "Friday",
+        "start_time": "14:00",
+        "end_time": "15:00"
+      }
+    },
+    {
+      "course_id": "C002",
+      "lecturer_id": "L001",
+      "room": "R110",
+      "timeslot": {
+        "day": "Friday",
+        "start_time": "10:00",
+        "end_time": "11:00"
+      }
+    },
+    {
+      "course_id": "C014",
+      "lecturer_id": "L007",
+      "room": "R101",
+      "timeslot": {
+        "day": "Monday",
+        "start_time": "13:00",
+        "end_time": "14:00"
+      }
+    },
+    {
+      "course_id": "C007",
+      "lecturer_id": "L002",
+      "room": "R108",
+      "timeslot": {
+        "day": "Monday",
+        "start_time": "10:00",
+        "end_time": "11:00"
+      }
+    },
+    {
+      "course_id": "C007",
+      "lecturer_id": "L009",
+      "room": "R101",
+      "timeslot": {
+        "day": "Friday",
+        "start_time": "11:00",
+        "end_time": "12:00"
+      }
+    },
+    {
+      "course_id": "C014",
+      "lecturer_id": "L008",
+      "room": "R103",
+      "timeslot": {
+        "day": "Friday",
+        "start_time": "11:00",
+        "end_time": "12:00"
+      }
+    },
+    {
+      "course_id": "C003",
+      "lecturer_id": "L002",
+      "room": "R105",
+      "timeslot": {
+        "day": "Tuesday",
+        "start_time": "11:00",
+        "end_time": "12:00"
+      }
+    },
+    {
+      "course_id": "C013",
+      "lecturer_id": "L010",
+      "room": "R107",
+      "timeslot": {
+        "day": "Thursday",
+        "start_time": "11:00",
+        "end_time": "12:00"
+      }
+    },
+    {
+      "course_id": "C008",
+      "lecturer_id": "L008",
+      "room": "R104",
+      "timeslot": {
+        "day": "Friday",
+        "start_time": "11:00",
+        "end_time": "12:00"
+      }
+    },
+    {
+      "course_id": "C011",
+      "lecturer_id": "L009",
+      "room": "R109",
+      "timeslot": {
+        "day": "Tuesday",
+        "start_time": "15:00",
+        "end_time": "16:00"
+      }
+    },
+    {
+      "course_id": "C011",
+      "lecturer_id": "L002",
+      "room": "R109",
+      "timeslot": {
+        "day": "Tuesday",
+        "start_time": "13:00",
+        "end_time": "14:00"
+      }
+    },
+    {
+      "course_id": "C009",
+      "lecturer_id": "L012",
+      "room": "R110",
+      "timeslot": {
+        "day": "Monday",
+        "start_time": "13:00",
+        "end_time": "14:00"
+      }
+    },
+    {
+      "course_id": "C008",
+      "lecturer_id": "L006",
+      "room": "R106",
+      "timeslot": {
+        "day": "Thursday",
+        "start_time": "11:00",
+        "end_time": "12:00"
+      }
+    },
+    {
+      "course_id": "C004",
+      "lecturer_id": "L008",
+      "room": "R109",
+      "timeslot": {
+        "day": "Friday",
+        "start_time": "13:00",
+        "end_time": "14:00"
+      }
+    },
+    {
+      "course_id": "C001",
+      "lecturer_id": "L007",
+      "room": "R103",
+      "timeslot": {
+        "day": "Tuesday",
+        "start_time": "09:00",
+        "end_time": "10:00"
+      }
+    },
+    {
+      "course_id": "C005",
+      "lecturer_id": "L008",
+      "room": "R107",
+      "timeslot": {
+        "day": "Friday",
+        "start_time": "11:00",
+        "end_time": "12:00"
+      }
+    },
+    {
+      "course_id": "C012",
+      "lecturer_id": "L002",
+      "room": "R110",
+      "timeslot": {
+        "day": "Tuesday",
+        "start_time": "10:00",
+        "end_time": "11:00"
+      }
+    },
+    {
+      "course_id": "C009",
+      "lecturer_id": "L010",
+      "room": "R102",
+      "timeslot": {
+        "day": "Friday",
+        "start_time": "11:00",
+        "end_time": "12:00"
+      }
+    },
+    {
+      "course_id": "C002",
+      "lecturer_id": "L010",
+      "room": "R106",
+      "timeslot": {
+        "day": "Wednesday",
+        "start_time": "10:00",
+        "end_time": "11:00"
+      }
+    },
+    {
+      "course_id": "C001",
+      "lecturer_id": "L008",
+      "room": "R109",
+      "timeslot": {
+        "day": "Thursday",
+        "start_time": "14:00",
+        "end_time": "15:00"
+      }
+    },
+    {
+      "course_id": "C013",
+      "lecturer_id": "L003",
+      "room": "R103",
+      "timeslot": {
+        "day": "Monday",
+        "start_time": "11:00",
+        "end_time": "12:00"
+      }
+    },
+    {
+      "course_id": "C005",
+      "lecturer_id": "L002",
+      "room": "R110",
+      "timeslot": {
+        "day": "Monday",
+        "start_time": "11:00",
+        "end_time": "12:00"
+      }
+    },
+    {
+      "course_id": "C012",
+      "lecturer_id": "L006",
+      "room": "R103",
+      "timeslot": {
+        "day": "Tuesday",
+        "start_time": "14:00",
+        "end_time": "15:00"
+      }
+    },
+    {
+      "course_id": "C012",
+      "lecturer_id": "L005",
+      "room": "R104",
+      "timeslot": {
+        "day": "Wednesday",
+        "start_time": "10:00",
+        "end_time": "11:00"
+      }
+    },
+    {
+      "course_id": "C011",
+      "lecturer_id": "L003",
+      "room": "R103",
+      "timeslot": {
+        "day": "Tuesday",
+        "start_time": "10:00",
+        "end_time": "11:00"
+      }
+    },
+    {
+      "course_id": "C002",
+      "lecturer_id": "L008",
+      "room": "R109",
+      "timeslot": {
+        "day": "Monday",
+        "start_time": "15:00",
+        "end_time": "16:00"
+      }
+    },
+    {
+      "course_id": "C007",
+      "lecturer_id": "L001",
+      "room": "R104",
+      "timeslot": {
+        "day": "Tuesday",
+        "start_time": "13:00",
+        "end_time": "14:00"
+      }
+    },
+    {
+      "course_id": "C015",
+      "lecturer_id": "L007",
+      "room": "R103",
+      "timeslot": {
+        "day": "Wednesday",
+        "start_time": "14:00",
+        "end_time": "15:00"
+      }
+    },
+    {
+      "course_id": "C012",
+      "lecturer_id": "L008",
+      "room": "R109",
+      "timeslot": {
+        "day": "Wednesday",
+        "start_time": "13:00",
+        "end_time": "14:00"
+      }
+    },
+    {
+      "course_id": "C003",
+      "lecturer_id": "L008",
+      "room": "R101",
+      "timeslot": {
+        "day": "Wednesday",
+        "start_time": "09:00",
+        "end_time": "10:00"
+      }
+    },
+    {
+      "course_id": "C004",
+      "lecturer_id": "L012",
+      "room": "R109",
+      "timeslot": {
+        "day": "Thursday",
+        "start_time": "13:00",
+        "end_time": "14:00"
+      }
+    },
+    {
+      "course_id": "C006",
+      "lecturer_id": "L004",
+      "room": "R104",
+      "timeslot": {
+        "day": "Wednesday",
+        "start_time": "09:00",
+        "end_time": "10:00"
+      }
+    },
+    {
+      "course_id": "C001",
+      "lecturer_id": "L009",
+      "room": "R109",
+      "timeslot": {
+        "day": "Monday",
+        "start_time": "13:00",
+        "end_time": "14:00"
+      }
+    },
+    {
+      "course_id": "C003",
+      "lecturer_id": "L005",
+      "room": "R110",
+      "timeslot": {
+        "day": "Wednesday",
+        "start_time": "10:00",
+        "end_time": "11:00"
+      }
+    },
+    {
+      "course_id": "C007",
+      "lecturer_id": "L009",
+      "room": "R103",
+      "timeslot": {
+        "day": "Tuesday",
+        "start_time": "14:00",
+        "end_time": "15:00"
+      }
+    }
+  ]
+}

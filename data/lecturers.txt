@@ -1,0 +1,12 @@
+L001,Dr Lecturer 1,lecturer1@uni.ac.uk
+L002,Dr Lecturer 2,lecturer2@uni.ac.uk
+L003,Dr Lecturer 3,lecturer3@uni.ac.uk
+L004,Dr Lecturer 4,lecturer4@uni.ac.uk
+L005,Dr Lecturer 5,lecturer5@uni.ac.uk
+L006,Dr Lecturer 6,lecturer6@uni.ac.uk
+L007,Dr Lecturer 7,lecturer7@uni.ac.uk
+L008,Dr Lecturer 8,lecturer8@uni.ac.uk
+L009,Dr Lecturer 9,lecturer9@uni.ac.uk
+L010,Dr Lecturer 10,lecturer10@uni.ac.uk
+L011,Dr Lecturer 11,lecturer11@uni.ac.uk
+L012,Dr Lecturer 12,lecturer12@uni.ac.uk
