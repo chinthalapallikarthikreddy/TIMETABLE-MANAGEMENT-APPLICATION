@@ -1,84 +1,80 @@
 from typing import List, Optional
-from utils.time_utils import normalize_day, day_to_index, parse_time_to_minutes, is_overlap
+from models.timetable_entry import TimetableEntry
+
+
+def parse_time_to_minutes(t: str) -> int:
+    h, m = t.split(":")
+    return int(h) * 60 + int(m)
+
+
+def normalize_day(day: str) -> str:
+    return day.strip().lower()
+
+
+def day_to_index(day: str) -> int:
+    days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    return days.index(normalize_day(day))
+
+
+def is_overlap(s1, e1, s2, e2) -> bool:
+    return not (e1 <= s2 or s1 >= e2)
 
 
 class SearchService:
-    @staticmethod
+    """
+    Class-based search logic used by the application.
+    """
+
     def next_class(
-        entries,
+        self,
+        entries: List[TimetableEntry],
         current_day: str,
         current_time: str,
-        course_code: Optional[str] = None,
-        lecturer_id: Optional[str] = None
-    ):
-        """
-        Finds the next upcoming class based on weekday order and time.
-        Assumes schedule repeats weekly.
+        course_code=None,
+        lecturer_id=None,
+    ) -> Optional[TimetableEntry]:
 
-        Filters:
-        - course_code (optional)
-        - lecturer_id (optional)
-        """
-        cur_day_idx = day_to_index(current_day)
-        cur_minutes = parse_time_to_minutes(current_time)
+        now_day_idx = day_to_index(current_day)
+        now_time = parse_time_to_minutes(current_time)
 
-        candidates = []
+        future = []
 
         for e in entries:
-            if course_code is not None and e.course.code != course_code:
-                continue
-            if lecturer_id is not None and e.lecturer.lecturer_id != lecturer_id:
-                continue
-
             e_day_idx = day_to_index(e.timeslot.day)
             e_start = parse_time_to_minutes(e.timeslot.start_time)
 
-            # compute "distance" in minutes from current moment within a weekly cycle
-            day_diff = (e_day_idx - cur_day_idx) % 7
-            delta_minutes = day_diff * 24 * 60 + (e_start - cur_minutes)
+            if e_day_idx < now_day_idx:
+                continue
+            if e_day_idx == now_day_idx and e_start <= now_time:
+                continue
 
-            # if same day and already started, push it to next week
-            if day_diff == 0 and e_start <= cur_minutes:
-                delta_minutes += 7 * 24 * 60
+            if course_code and e.course.code != course_code:
+                continue
+            if lecturer_id and e.lecturer.lecturer_id != lecturer_id:
+                continue
 
-            candidates.append((delta_minutes, e))
+            future.append((e_day_idx, e_start, e))
 
-        if not candidates:
+        if not future:
             return None
 
-        candidates.sort(key=lambda x: x[0])
-        return candidates[0][1]
+        future.sort(key=lambda x: (x[0], x[1]))
+        return future[0][2]
 
-    @staticmethod
-    def find_free_rooms(
-        entries,
-        all_rooms: List[str],
-        day: str,
-        start_time: str,
-        end_time: str
-    ) -> List[str]:
-        """
-        Returns rooms that have no overlapping booking in the given time window on the given day.
-        """
-        d = normalize_day(day)
-        requested_start = start_time
-        requested_end = end_time
 
-        free_rooms = []
+# ================================
+# FUNCTIONAL WRAPPER (CRITICAL)
+# ================================
 
-        for room in all_rooms:
-            occupied = False
-            for e in entries:
-                if e.room != room:
-                    continue
-                if normalize_day(e.timeslot.day) != d:
-                    continue
-
-                if is_overlap(e.timeslot.start_time, e.timeslot.end_time, requested_start, requested_end):
-                    occupied = True
-                    break
-
-            if not occupied:
-                free_rooms.append(room)
-
-        return free_rooms
+def find_next_class(entries, current_day, current_time, course_code=None, lecturer_id=None):
+    """
+    Wrapper required for Black-box, White-box, Loop, and Symbolic tests.
+    """
+    service = SearchService()
+    return service.next_class(
+        entries=entries,
+        current_day=current_day,
+        current_time=current_time,
+        course_code=course_code,
+        lecturer_id=lecturer_id,
+    )

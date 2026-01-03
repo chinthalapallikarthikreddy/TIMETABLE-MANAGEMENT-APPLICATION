@@ -1,34 +1,51 @@
-from typing import List
-from utils.time_utils import day_to_index, parse_time_to_minutes, normalize_day
+from models.timetable_entry import TimetableEntry
+
+
+def parse_time_to_minutes(t: str) -> int:
+    h, m = t.split(":")
+    return int(h) * 60 + int(m)
+
+
+def normalize_day(day: str) -> str:
+    return day.strip().lower()
+
+
+def day_to_index(day: str) -> int:
+    days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    return days.index(normalize_day(day))
 
 
 class ExportService:
-    @staticmethod
-    def export_to_text(entries, filepath: str) -> None:
-        """
-        Exports timetable entries to a text file in a readable format.
-        """
-        # Sort by day then start_time
-        def sort_key(e):
-            return (day_to_index(e.timeslot.day), parse_time_to_minutes(e.timeslot.start_time))
+    """
+    Handles exporting timetable entries to a text file.
+    """
 
-        entries_sorted = sorted(entries, key=sort_key)
+    def export_to_text(self, entries, file_path: str) -> None:
+        with open(file_path, "w") as f:
+            if not entries:
+                f.write("")
+                return
 
-        lines: List[str] = []
-        lines.append("Timetable Export")
-        lines.append("=" * 60)
+            for e in entries:
+                line = (
+                    f"{e.course.code},"
+                    f"{e.course.course_id},"
+                    f"{e.lecturer.lecturer_id},"
+                    f"{e.room},"
+                    f"{e.timeslot.day},"
+                    f"{e.timeslot.start_time}-"
+                    f"{e.timeslot.end_time}\n"
+                )
+                f.write(line)
 
-        for e in entries_sorted:
-            line = (
-                f"{normalize_day(e.timeslot.day).title():<10} "
-                f"{e.timeslot.start_time}-{e.timeslot.end_time} | "
-                f"{e.course.code:<10} | "
-                f"{e.lecturer.name:<20} | "
-                f"Room: {e.room}"
-            )
-            lines.append(line)
 
-        content = "\n".join(lines)
+# ================================
+# FUNCTIONAL WRAPPER (CRITICAL)
+# ================================
 
-        with open(filepath, "w", encoding="utf-8") as f:
-            f.write(content)
+def export_timetable(entries, file_path: str) -> None:
+    """
+    Wrapper required for Black-box, White-box, and Branch Coverage tests.
+    """
+    service = ExportService()
+    return service.export_to_text(entries, file_path)
