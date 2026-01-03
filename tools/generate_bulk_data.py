@@ -63,7 +63,7 @@ def main():
     write_file("rooms.txt", rooms)
     write_file("timetable.txt", timetable)
 
-    print("✅ Bulk data generated:")
+    print("Bulk data generated:")
     print(f"- {len(courses)} courses")
     print(f"- {len(lecturers)} lecturers")
     print(f"- {len(rooms)} rooms")
