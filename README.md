@@ -1,34 +1,57 @@
-# Timetable Management System - Main Application
+# Timetable Management System 🗓️
 
-The `main.py` file serves as the **entry point** for a console-based Timetable Management System. It provides a user interface for managing courses, lecturers, and timetable entries. The application also supports viewing upcoming classes, finding free rooms, and exporting the timetable.
+This documentation covers the **Timetable Management Application**, designed as a command-line tool for efficient class scheduling, clash detection, lecturer/course management, and timetable export. It merges all key guidance, project structure, and a deep-dive code walkthrough for the main application (`main.py`).
 
 ---
 
-## Overview of the Main Components
+## Project Purpose and Overview
 
-The code integrates multiple modules, each handling a specific aspect of data management or business logic:
+This application allows educational organizations or individuals to:
 
-- **Data Storage**: Handles saving and loading of timetable data.
-- **Model Factory**: Responsible for creating model instances from stored data.
-- **Services**: Provide utility functions like clash detection, search, and export.
-- **Models**: Define the structure for courses, lecturers, timeslots, and timetable entries.
+- **Register courses and lecturers**
+- **Schedule classes** (with automatic clash detection)
+- **Search for upcoming classes**
+- **Find free rooms**
+- **Export the timetable for sharing or printing**
+- **Persist all data in a JSON file**
+- **Test using Black-box, White-box, and Symbolic approaches**
+
+No GUI or database is required; the system runs interactively in the terminal/command-line.
+
+---
+
+## File & Directory Structure
+
+| File/Directory                | Purpose                                                                  |
+|-------------------------------|--------------------------------------------------------------------------|
+| `main.py`                     | Main application script and user menu interface                          |
+| `models/`                     | Data models for courses, lecturers, timeslots, and timetable entries     |
+| `services/`                   | Business logic for clash checking, searching, and exporting data         |
+| `storage/`                    | Data persistence and storage logic (JSON serialization)                  |
+| `data/store.json`             | Persistent storage file for all data                                     |
+| `data/timetable_export.txt`   | Output file for exported timetable                                       |
+| `tests/`                      | Test suites per group member and utilities                               |
+| `pytest.ini`                  | Pytest configuration                                                     |
+| `requirements.txt`            | Python dependencies                                                      |
 
 ---
 
 ## Main Features
 
-- Add, view, and manage courses, lecturers, and timetable entries.
-- Detect and prevent scheduling clashes.
-- Find the next scheduled class.
-- Search for free rooms within a timeslot.
-- Export the current timetable to a text file.
+- **Add new courses and lecturers**
+- **Schedule classes with clash detection**
+- **View the next upcoming class**
+- **Find available/free rooms**
+- **Export the timetable to a text file**
+- **Persistent data storage in JSON**
+- **Comprehensive test coverage**
+- **Agile and CMMI-compliant project management**
 
 ---
 
-## Core Application Flow
+## Main Application Flow
 
-The main application flow centers around a looped menu-driven interface. Here’s how the logic is structured:
-
+The core application logic revolves around a user-interactive, menu-driven loop, where all data is loaded at start and changes are saved after each operation.
 
 ```mermaid
 flowchart TD
@@ -59,195 +82,9 @@ flowchart TD
 
 ---
 
-## Main Menu Operations
-
-### 1. Add Course
-
-Prompts the user for course details and adds a new course to the system.
-
-- **Prompts for:** Course ID, Name, Code, Level
-- **Stores:** In-memory and persistent storage
-
-### 2. Add Lecturer
-
-Adds a new lecturer to the system by collecting relevant information.
-
-- **Prompts for:** Lecturer ID, Name, Email
-
-### 3. Add Timetable Entry
-
-Schedules a new class, linking a course, lecturer, room, and timeslot.
-
-- **Checks for scheduling clashes** using `ClashService`.
-- **Prompts for:** Course ID, Lecturer ID, Room, Day, Start/End time
-
-### 4. View Next Class
-
-Displays the next scheduled class based on the current day and time.
-
-- **Prompts for:** Current day, Current time
-
-### 5. Find Free Rooms
-
-Finds and lists rooms not scheduled at a specified time.
-
-- **Prompts for:** Day, Start and End time
-
-### 6. Export Timetable
-
-Exports the current timetable entries to a text file.
-
-- **Saves to:** `data/timetable_export.txt`
-
-### 0. Exit
-
-Exits the application.
-
----
-
-## Key Classes and Their Roles
-
-| Class/Module              | Purpose                                              |
-|---------------------------|-----------------------------------------------------|
-| `DataContext`             | Holds in-memory data: courses, lecturers, entries   |
-| `JsonStore`               | Loads and saves data from/to a JSON file            |
-| `ModelFactory`            | Instantiates models from raw data                   |
-| `ClashService`            | Detects timetable clashes                           |
-| `SearchService`           | Finds next class and free rooms                     |
-| `ExportService`           | Exports timetable data to text                      |
-| `Course`, `Lecturer`, ... | Define main entities of the system                  |
-
----
-
-## Example: Adding a Timetable Entry
-
-```python
-entry = TimetableEntry(
-    course=ctx.courses[course_id],
-    lecturer=ctx.lecturers[lecturer_id],
-    room=room,
-    timeslot=Timeslot(day, start, end)
-)
-errors = ClashService.validate_no_clashes(ctx.entries, entry)
-if errors:
-    for e in errors:
-        print("ERROR:", e)
-else:
-    ctx.entries.append(entry)
-    store.save(ctx)
-    print("Timetable entry added.")
-```
-
-- **ClashService** ensures no overlapping classes for room, lecturer, or course.
-
----
-
-## Application Control Loop
-
-The application uses an infinite loop to display the menu and process user input until exit:
-
-```python
-while True:
-    main_menu()
-    choice = input("Select option: ").strip()
-    # ... handle choices ...
-    if choice == "0":
-        break
-```
-
----
-
-## Persistent Data Storage
-
-The application uses a JSON file (`data/store.json`) to persist all data. On start, it loads existing data; after any modification, it saves changes.
-
----
-
-## Example: Export Timetable
-
-```python
-ExportService.export_to_text(ctx.entries, "data/timetable_export.txt")
-print("Timetable exported.")
-```
-
-- **Exports** all current timetable entries in a human-readable format.
-
----
-
-## Limitations & Recommendations
-
-- ❗ **No authentication or user management**—the system is open to any user running the script.
-- 🛠 **Error handling** is minimal; invalid input may cause crashes.
-- ✨ **Enhancements**: Add validation, better input prompts, and support for deleting/editing entries.
-
----
-
-```card
-{
-    "title": "Best Practice",
-    "content": "Always save changes after adding or modifying data to prevent loss on unexpected shutdown."
-}
-```
-
----
-
-## Summary
-
-The `main.py` file orchestrates a simple yet robust command-line timetable management solution. It leverages modular design, persistent storage, and service-oriented architecture for maintainability. The menu-driven interface makes it accessible for basic use cases in academic scheduling.
-
----
-
-### No API Endpoints
-
-**Note:** This file does not define HTTP API endpoints or routes. All interactions are via the command-line interface. No API documentation blocks are needed.
-
----
-
-**End of documentation for `main.py`**
-# Timetable Management System 🗓️
-
-This project is a **command-line-based Timetable Management System** for managing courses, lecturers, and timetable entries. It includes key features such as clash detection, class search, free room finding, and schedule export. The application persists data using a JSON file and provides a user-friendly interactive menu.
-
----
-
-## Purpose and Overview
-
-The system helps educational institutions or individual users to:
-- Register courses and lecturers
-- Schedule classes with clash validation
-- Quickly search for next classes
-- Find free rooms given timeslots
-- Export the timetable for further use
-
----
-
-## File Structure
-
-| File/Directory      | Purpose                                                                |
-|---------------------|-----------------------------------------------------------------------|
-| `main.py`           | Main application script and user menu interface                       |
-| `storage/`          | Data persistence and storage logic                                    |
-| `services/`         | Business logic for clash checking, searching, and exporting data      |
-| `models/`           | Data models for courses, lecturers, timeslots, and timetable entries  |
-| `data/store.json`   | Persistent storage file for all data                                  |
-| `data/timetable_export.txt` | Output file for exported timetable                          |
-
----
-
-## Key Features
-
-- **Add new courses and lecturers**
-- **Schedule classes with automatic clash detection**
-- **View the next upcoming class**
-- **Find available/free rooms for a given timeslot**
-- **Export the timetable to a text file**
-- **Persistent data storage in JSON**
-
----
-
 ## Application Architecture
 
-The system separates concerns into data models, storage, and business logic. Below is a high-level view of the architecture:
+The system is modular: separating concerns between models, storage, and services.
 
 ```mermaid
 flowchart TD
@@ -271,11 +108,89 @@ flowchart TD
 
 ---
 
-## Main Menu and User Flow
+## Code Walkthrough: main.py
 
-Upon running the program, users are presented with a simple menu:
+### Initialization and Data Persistence
 
+On startup, the application:
+
+1. **Instantiates core objects**:
+   - `DataContext` (in-memory data)
+   - `JsonStore` (for file storage)
+   - `ModelFactory` (for deserialization)
+2. **Loads previously saved data** from `data/store.json`.
+
+All data changes (courses, lecturers, entries) are immediately saved to ensure persistence.
+
+### Menu Operations
+
+#### 1. Add Course
+
+- Prompts for: Course ID, Name, Code, Level
+- Adds the course to `DataContext.courses` and saves to JSON.
+
+#### 2. Add Lecturer
+
+- Prompts for: Lecturer ID, Name, Email
+- Adds the lecturer to `DataContext.lecturers` and saves to JSON.
+
+#### 3. Add Timetable Entry
+
+- Prompts for: Course ID, Lecturer ID, Room, Day, Start/End time.
+- **Validates for clashes** using `ClashService.validate_no_clashes`.
+- On success, adds the entry and saves; on error, displays conflict messages.
+
+```python
+entry = TimetableEntry(
+    course=ctx.courses[course_id],
+    lecturer=ctx.lecturers[lecturer_id],
+    room=room,
+    timeslot=Timeslot(day, start, end)
+)
+errors = ClashService.validate_no_clashes(ctx.entries, entry)
+if errors:
+    for e in errors:
+        print("ERROR:", e)
+else:
+    ctx.entries.append(entry)
+    store.save(ctx)
+    print("Timetable entry added.")
 ```
+
+#### 4. View Next Class
+
+- Prompts for: Current day, Current time
+- Uses `SearchService.next_class` to find the next scheduled class.
+
+#### 5. Find Free Rooms
+
+- Prompts for: Day, Start, End time
+- Uses `SearchService.find_free_rooms` to return a list of available rooms.
+
+#### 6. Export Timetable
+
+- Exports all timetable entries to `data/timetable_export.txt` using `ExportService.export_to_text`.
+
+#### 0. Exit
+
+- Exits the application loop safely.
+
+---
+
+## Data Models
+
+| Model            | Fields                                                 |
+|------------------|-------------------------------------------------------|
+| `Course`         | `course_id`, `name`, `code`, `level`                  |
+| `Lecturer`       | `lecturer_id`, `name`, `email`                        |
+| `Timeslot`       | `day`, `start_time`, `end_time`                       |
+| `TimetableEntry` | `course`, `lecturer`, `room`, `timeslot`              |
+
+---
+
+## Example User Flow
+
+```text
 === Timetable Management System ===
 1. Add course
 2. Add lecturer
@@ -284,70 +199,7 @@ Upon running the program, users are presented with a simple menu:
 5. Find free rooms
 6. Export timetable
 0. Exit
-```
 
-Actions are performed interactively, with data automatically saved after each operation.
-
----
-
-## Detailed Code Walkthrough
-
-### Data Loading and Saving
-
-- The program uses `JsonStore` to **load** all stored data (courses, lecturers, timetable entries) on startup, and **save** changes after every add/modify operation.
-
-### Adding Courses and Lecturers
-
-- Users provide details for each new course or lecturer.
-- The system stores these in the `DataContext` and persists them to `store.json`.
-
-### Scheduling Entries with Clash Detection
-
-- When scheduling a class, the system:
-  - Collects details (course, lecturer, room, day, start/end time)
-  - Constructs a `TimetableEntry` object
-  - Invokes `ClashService.validate_no_clashes` to ensure there are **no time or room conflicts**
-  - If validation passes, the entry is saved; otherwise, errors are shown.
-
-### Finding Next Class and Free Rooms
-
-- The system can search for the next scheduled class after a given day/time using `SearchService.next_class`.
-- It can also find all **free rooms** for a specified timeslot using `SearchService.find_free_rooms`.
-
-### Exporting the Timetable
-
-- All timetable entries can be exported to a readable text file using `ExportService.export_to_text`, for sharing or printing.
-
----
-
-## Detailed Main Menu Flow
-
-```mermaid
-flowchart TD
-    Start([Start]) --> Menu[Show Main Menu]
-    Menu -->|Choice 1| AddCourse[Add Course]
-    Menu -->|Choice 2| AddLecturer[Add Lecturer]
-    Menu -->|Choice 3| AddEntry[Add Timetable Entry<br/>with Clash Check]
-    Menu -->|Choice 4| NextClass[View Next Class]
-    Menu -->|Choice 5| FreeRooms[Find Free Rooms]
-    Menu -->|Choice 6| Export[Export Timetable to Text]
-    Menu -->|Choice 0| End([Exit])
-    Menu -->|Invalid| Menu
-    AddCourse --> Menu
-    AddLecturer --> Menu
-    AddEntry --> Menu
-    NextClass --> Menu
-    FreeRooms --> Menu
-    Export --> Menu
-```
-
----
-
-## Example Usage
-
-### Adding a Course
-
-```
 Select option: 1
 Course ID: CSCI101
 Name: Introduction to Computer Science
@@ -355,9 +207,7 @@ Code: CS101
 Level: 1
 ```
 
-### Adding a Timetable Entry (with clash check)
-
-```
+```text
 Select option: 3
 Course ID: CSCI101
 Lecturer ID: L123
@@ -367,43 +217,6 @@ Start time (HH:MM): 09:00
 End time (HH:MM): 11:00
 Timetable entry added.
 ```
-
-### Viewing Next Class
-
-```
-Select option: 4
-Current day: Monday
-Current time (HH:MM): 08:30
-Next class: CS101 Monday 09:00
-```
-
-### Finding Free Rooms
-
-```
-Select option: 5
-Day: Monday
-Start time (HH:MM): 09:00
-End time (HH:MM): 10:00
-Free rooms: ['Room 3', 'Room 6', 'Room 7']
-```
-
-### Exporting Timetable
-
-```
-Select option: 6
-Timetable exported.
-```
-
----
-
-## Data Models Overview
-
-| Model           | Fields                                                    |
-|-----------------|----------------------------------------------------------|
-| `Course`        | `course_id`, `name`, `code`, `level`                     |
-| `Lecturer`      | `lecturer_id`, `name`, `email`                           |
-| `Timeslot`      | `day`, `start_time`, `end_time`                          |
-| `TimetableEntry`| `course`, `lecturer`, `room`, `timeslot`                 |
 
 ---
 
@@ -443,25 +256,23 @@ Timetable exported.
 
 ---
 
-## API Endpoints
+## Example: Export Timetable
 
-> **Note:** This system is currently a **console application** and does not expose HTTP API endpoints. All interactions take place via the command-line interface.
-
----
-
-## Running the Application
-
-1. Ensure you have Python 3.x installed.
-2. Required modules should be present in the project directory.
-3. To start:
-
-```bash
-python main.py
+```python
+ExportService.export_to_text(ctx.entries, "data/timetable_export.txt")
+print("Timetable exported.")
 ```
 
 ---
 
 ## Best Practices & Recommendations
+
+```card
+{
+    "title": "Best Practice",
+    "content": "Always save changes after adding or modifying data to prevent loss on unexpected shutdown."
+}
+```
 
 ```card
 {
@@ -479,32 +290,107 @@ python main.py
 
 ---
 
-## Extending and Customizing
+## Troubleshooting
 
-- **Add more search/filter features** (e.g., by lecturer, by level)
-- **Integrate with a web or REST API** for remote access
-- **Support for recurring events or more advanced constraints**
-- **Role-based access (admin vs. viewer)**
+- **Invalid Input**: The system prompts again for unrecognized menu options.
+- **Missing Data**: Add courses/lecturers before scheduling classes with their IDs.
 
 ---
 
-## Troubleshooting
+## Limitations
 
-- **Invalid Input**: If you enter an invalid menu option, the system will prompt again.
-- **Missing Data**: If you try to schedule an entry with a non-existent course or lecturer, add them first.
+- ❗ **No authentication or user management**
+- 🛠 **Minimal error handling**; invalid input may cause crashes.
+- 📋 **CLI only**—no database or GUI, as required by project brief.
+- 🚫 Not designed for production deployment.
+
+---
+
+## Extending and Customizing
+
+- Add search/filter features (e.g. by lecturer, by level)
+- Integrate a web or REST API
+- Support recurring events or more complex constraints
+- Role-based access (admin vs. viewer)
+
+---
+
+## Running & Testing the Application
+
+### Prerequisites
+
+- Python 3.10+ (tested up to Python 3.13)
+- Pip
+- Git
+
+### Setup
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate     # macOS/Linux
+# .venv\Scripts\activate      # Windows
+
+pip install -r requirements.txt
+```
+
+### Run the Main Application
+
+```bash
+python3 src/main.py
+```
+
+### Running Tests
+
+- Each group member has their own test suite:
+  - `pytest tests/249048805 -q`
+  - `pytest tests/249058832 -q`
+  - `pytest tests/259040710 -q`
+  - `pytest tests/259047255 -q`
+- For coverage:
+  - `pytest --cov=src --cov-report=term-missing`
+  - `pytest --cov=src --cov-report=html`
+
+---
+
+## Agile & Quality Assurance
+
+- **Agile Scrum**: 4 sprints, GitHub Projects, equal story points, user stories, and issue tracking.
+- **CMMI Level 2**: Documented requirements, planning, monitoring, configuration management, and measurement.
+- **Testing**: Black-box, White-box, and Symbolic, with full coverage reports.
+
+---
+
+## Authors
+
+| Student ID   |
+|--------------|
+| 249048805    |
+| 249058832    |
+| 259040710    |
+| 259047255    |
+
+---
+
+## Declaration
+
+This project complies with University of Leicester’s academic integrity policy. All development and testing followed the CO7095 module standards.
 
 ---
 
 ## License
 
-This project is released for educational and demonstration purposes.
-
----
-
-## Credits
-
-Developed as a modular, extensible timetable management solution for programming and software engineering exercises.
+Released for educational and demonstration purposes.
 
 ---
 
 **Happy scheduling!**
+
+---
+
+### No API Endpoints
+
+> **Note:** This system is console-based and does **not** expose any HTTP API endpoints at this time.
+
+---
+
+**End of documentation for `main.py`**
