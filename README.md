@@ -342,7 +342,7 @@ python3 src/main.py
 ### Running Tests
 
 - Each group member has their own test suite:
-  - `pytest tests/249048805 -q`
+  - `pytest tests/259048805 -q`
   - `pytest tests/249058832 -q`
   - `pytest tests/259040710 -q`
   - `pytest tests/259047255 -q`
@@ -364,7 +364,7 @@ python3 src/main.py
 
 | Student ID   |
 |--------------|
-| 249048805    |
+| 259048805    |
 | 249058832    |
 | 259040710    |
 | 259047255    |
