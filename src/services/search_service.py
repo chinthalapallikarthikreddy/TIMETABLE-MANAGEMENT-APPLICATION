@@ -1,8 +1,12 @@
+from __future__ import annotations
+
 from typing import List, Optional
+
 from models.timetable_entry import TimetableEntry
 
 
 def parse_time_to_minutes(t: str) -> int:
+    t = t.strip()
     h, m = t.split(":")
     return int(h) * 60 + int(m)
 
@@ -16,65 +20,83 @@ def day_to_index(day: str) -> int:
     return days.index(normalize_day(day))
 
 
-def is_overlap(s1, e1, s2, e2) -> bool:
-    return not (e1 <= s2 or s1 >= e2)
+def times_overlap(start_a: str, end_a: str, start_b: str, end_b: str) -> bool:
+    a1 = parse_time_to_minutes(start_a)
+    a2 = parse_time_to_minutes(end_a)
+    b1 = parse_time_to_minutes(start_b)
+    b2 = parse_time_to_minutes(end_b)
+    return a1 < b2 and b1 < a2
 
 
 class SearchService:
     """
-    Class-based search logic used by the application.
+    Search utilities:
+    - next_class: finds the next scheduled class from a given day+time
+      (scans the rest of the week as well, not just the same day)
+    - find_free_rooms: returns rooms not booked in a given interval
     """
 
-    def next_class(
-        self,
-        entries: List[TimetableEntry],
-        current_day: str,
-        current_time: str,
-        course_code=None,
-        lecturer_id=None,
-    ) -> Optional[TimetableEntry]:
+    @staticmethod
+    def next_class(entries: List[TimetableEntry], current_day: str, current_time: str) -> Optional[TimetableEntry]:
+        if not entries:
+            return None
 
-        now_day_idx = day_to_index(current_day)
-        now_time = parse_time_to_minutes(current_time)
+        cur_day_idx = day_to_index(current_day)
+        cur_time_min = parse_time_to_minutes(current_time)
 
-        future = []
+        best = None
+        best_key = None  # (delta_days, start_minutes)
 
         for e in entries:
             e_day_idx = day_to_index(e.timeslot.day)
-            e_start = parse_time_to_minutes(e.timeslot.start_time)
+            delta = (e_day_idx - cur_day_idx) % 7
 
-            if e_day_idx < now_day_idx:
-                continue
-            if e_day_idx == now_day_idx and e_start <= now_time:
-                continue
+            e_start_min = parse_time_to_minutes(e.timeslot.start_time)
 
-            if course_code and e.course.code != course_code:
-                continue
-            if lecturer_id and e.lecturer.lecturer_id != lecturer_id:
+            # If same day, it must be strictly after the current time
+            if delta == 0 and e_start_min <= cur_time_min:
                 continue
 
-            future.append((e_day_idx, e_start, e))
+            key = (delta, e_start_min)
+            if best_key is None or key < best_key:
+                best_key = key
+                best = e
 
-        if not future:
-            return None
+        return best
 
-        future.sort(key=lambda x: (x[0], x[1]))
-        return future[0][2]
+    @staticmethod
+    def find_free_rooms(entries: List[TimetableEntry], rooms: List[str], day: str, start: str, end: str) -> List[str]:
+        if not rooms:
+            return []
+
+        d = normalize_day(day)
+        free = []
+
+        for r in rooms:
+            booked = False
+            for e in entries:
+                if normalize_day(e.timeslot.day) != d:
+                    continue
+                if e.room != r:
+                    continue
+                if times_overlap(start, end, e.timeslot.start_time, e.timeslot.end_time):
+                    booked = True
+                    break
+
+            if not booked:
+                free.append(r)
+
+        free.sort()
+        return free
 
 
 # ================================
-# FUNCTIONAL WRAPPER (CRITICAL)
+# FUNCTIONAL WRAPPERS (for tests)
 # ================================
 
-def find_next_class(entries, current_day, current_time, course_code=None, lecturer_id=None):
-    """
-    Wrapper required for Black-box, White-box, Loop, and Symbolic tests.
-    """
-    service = SearchService()
-    return service.next_class(
-        entries=entries,
-        current_day=current_day,
-        current_time=current_time,
-        course_code=course_code,
-        lecturer_id=lecturer_id,
-    )
+def find_next_class(entries: List[TimetableEntry], current_day: str, current_time: str) -> Optional[TimetableEntry]:
+    return SearchService.next_class(entries, current_day, current_time)
+
+
+def find_free_rooms(entries: List[TimetableEntry], rooms: List[str], day: str, start: str, end: str) -> List[str]:
+    return SearchService.find_free_rooms(entries, rooms, day, start, end)

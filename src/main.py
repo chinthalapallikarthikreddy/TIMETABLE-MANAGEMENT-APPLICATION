@@ -1,3 +1,5 @@
+import os
+
 from storage.data_context import DataContext
 from storage.json_store import JsonStore
 from storage.model_factory import ModelFactory
@@ -28,16 +30,31 @@ def main_menu():
 
 def main():
     ctx = DataContext()
-    store = JsonStore(STORE_FILE)
+
+    # -------------------------------
+    # Auto-load persisted data safely
+    # -------------------------------
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    store_path = os.path.join(project_root, STORE_FILE)
+
+    store = JsonStore(store_path)
     factory = ModelFactory()
 
-    # Load saved data
-    store.load(ctx, factory)
+    if os.path.exists(store_path):
+        try:
+            store.load(ctx, factory)
+            # Optional debug line (comment out for video)
+            # print(f"Loaded {len(ctx.entries)} timetable entries")
+        except Exception as ex:
+            print(f"Warning: could not load saved data: {ex}")
 
     while True:
         main_menu()
         choice = input("Select option: ").strip()
 
+        # -------------------------------
+        # Add course
+        # -------------------------------
         if choice == "1":
             c = Course(
                 course_id=input("Course ID: "),
@@ -48,6 +65,9 @@ def main():
             ctx.courses[c.course_id] = c
             store.save(ctx)
 
+        # -------------------------------
+        # Add lecturer
+        # -------------------------------
         elif choice == "2":
             l = Lecturer(
                 lecturer_id=input("Lecturer ID: "),
@@ -57,6 +77,9 @@ def main():
             ctx.lecturers[l.lecturer_id] = l
             store.save(ctx)
 
+        # -------------------------------
+        # Add timetable entry
+        # -------------------------------
         elif choice == "3":
             course_id = input("Course ID: ")
             lecturer_id = input("Lecturer ID: ")
@@ -81,9 +104,13 @@ def main():
                 store.save(ctx)
                 print("Timetable entry added.")
 
+        # -------------------------------
+        # View next class
+        # -------------------------------
         elif choice == "4":
             day = input("Current day: ")
             time = input("Current time (HH:MM): ")
+
             next_entry = SearchService.next_class(ctx.entries, day, time)
 
             if next_entry:
@@ -96,19 +123,28 @@ def main():
             else:
                 print("No upcoming classes found.")
 
+        # -------------------------------
+        # Find free rooms
+        # -------------------------------
         elif choice == "5":
             day = input("Day: ")
             start = input("Start time (HH:MM): ")
             end = input("End time (HH:MM): ")
-            rooms = list(ctx.rooms.keys())
 
+            rooms = list(ctx.rooms.keys())
             free = SearchService.find_free_rooms(ctx.entries, rooms, day, start, end)
             print("Free rooms:", free)
 
+        # -------------------------------
+        # Export timetable
+        # -------------------------------
         elif choice == "6":
-            ExportService.export_to_text(ctx.entries, "data/timetable_export.txt")
+            ExportService().export_to_text(ctx.entries, "data/timetable_export.txt")
             print("Timetable exported.")
 
+        # -------------------------------
+        # Exit
+        # -------------------------------
         elif choice == "0":
             break
 
